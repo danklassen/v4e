@@ -15,13 +15,13 @@ A simple bash script to convert videos to various formats for html5 video using 
 
 ### Options
 
--i the input file name
--o the base output filename (no extension needed... the appropriate ones will be added)
--v an optional video scale string passed to ffmpeg. The default is 480:-1 which scales to 480 wide and maintains the aspect ratio
+* `-i` the input file name
+* `-o` the base output filename (no extension needed... the appropriate ones will be added)
+* `-v` an optional video scale string passed to ffmpeg. The default is 480:-1 which scales to 480 wide and maintains the aspect ratio
 
 ## Changelog
 
-### 0.1 
+### 1.0.0
 Released 2016-05-13
 
 Initial Release
