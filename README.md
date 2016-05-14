@@ -15,11 +15,21 @@ A simple bash script to convert videos to various formats for html5 video using 
 
 ### Options
 
-* `-i` the input file name
-* `-o` the base output filename (no extension needed... the appropriate ones will be added)
-* `-v` an optional video scale string passed to ffmpeg. The default is 480:-1 which scales to 480 wide and maintains the aspect ratio
+* `-c` capture a still cover photo (use -t to seek to a specific point in the video)
+* `-d` input directory (required if input file is omitted)
+* `-i` input file (required if directory is omitted)
+* `-t` seek to a specific timestamp for a screen capture (defaults to '00:00:05.000')
+* `-o` output file (required)
+* `-v` video scaling (defaults to 480:-1 to preserver aspect ratio)
 
 ## Changelog
+
+### 1.0.1
+Released 2016-05-14
+
+* added in the `-d` directory parsing option
+* added in the `-c` coverphoto flag
+* added in the `-t` coverphoto timestamp option
 
 ### 1.0.0
 Released 2016-05-13

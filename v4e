@@ -1,8 +1,10 @@
 #!/bin/bash
 # Written by Dan Klassen <dan@triplei.ca>
-# Last Updated - 2016-05-13
+# Last Updated - 2016-05-14
 
-VERSION="1.0.0"
+VERSION="1.0.1"
+CAPTURE_STILL=false
+CAPTURE_TIMESTAMP="00:00:05.000"
 VSCALE="480:-1"
 
 helpText() {
@@ -10,8 +12,10 @@ helpText() {
     echo ""
     echo "Convert the passed in video file to various formats for the web"
     echo "OPTIONS:"
+    echo "-c capture a still cover photo (use -t to seek to a specific point in the video)"
     echo "-d input directory (required if input file is omitted)"
     echo "-i input file (required if directory is omitted)"
+    echo "-t seek to a specific timestamp for a screen capture (defaults to '00:00:05.000')"
     echo "-o output file (required)"
     echo "-v video scaling (defaults to 480:-1 to preserver aspect ratio)"
     exit 0
@@ -24,6 +28,10 @@ convertFile() {
     ffmpeg -i "$1" -codec:v libtheora -q:v 6 -codec:a libvorbis -ab 128k -vf scale="$VSCALE" "$2".ogv
     echo "Creating .webm version"
     ffmpeg -i "$1" -codec:v libvpx -q:v 6 -codec:a libvorbis -ab 128k -vf scale="$VSCALE" "$2".webm
+    if [ "$CAPTURE_STILL" = true ]; then
+        echo "Capturing cover photo"
+        ffmpeg -i "$1" -ss "$CAPTURE_TIMESTAMP" -vframes 1 "$2".png
+    fi
     echo "done"
 }
 
@@ -31,20 +39,26 @@ if [ $# == 0 ]; then
     helpText
 fi
 
-while getopts "hd:i:o:v:" opt; do
+while getopts "hd:i:o:v:ct:" opt; do
     case $opt in
-        h)
-            helpText
-            exit 0
+        c)
+            CAPTURE_STILL=true
             ;;
         d)
             DIRECTORY="$OPTARG" >&2
+            ;;
+        h)
+            helpText
+            exit 0
             ;;
         i)
             FILENAME="$OPTARG" >&2
             ;;
         o)
             OUTPUT="$OPTARG" >&2
+            ;;
+        t)
+            CAPTURE_TIMESTAMP="$OPTARG" >&2
             ;;
         v)
             VSCALE=$OPTARG >&2
@@ -98,6 +112,5 @@ if [ ! -z "$DIRECTORY" ]; then
     done
 
 fi
-
 
 exit 0
